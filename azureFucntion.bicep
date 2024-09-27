@@ -1,3 +1,5 @@
+//az deployment sub create -f .\resourcegroup.bicep -l uksouth
+//az bicep build --file resourcegroup.bicep  build to generare ARM template
 
 param location string
 var appName = 'fnapp${uniqueString(resourceGroup().id)}'
