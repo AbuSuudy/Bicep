@@ -1,5 +1,5 @@
 //az bicep build --file main.bicep
-//az deployment group create --resource-group adxtestrg --template-file main.bicep 
+//az deployment group create --resource-group RG-AbubakarSuudy-DEV --template-file main.bicep 
 
 targetScope = 'resourceGroup' 
 
@@ -10,7 +10,7 @@ metadata owner = 'Azure/module-maintainers'
 @minLength(4)
 @maxLength(22)
 @description('Required. The name of the Kusto cluster which must be unique within Azure.')
-param name string = 'adxtstcluster'
+param name string = 'adxcluster02'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -53,12 +53,9 @@ resource cluster 'Microsoft.Kusto/clusters@2023-08-15' = {
 }
 
 resource database 'Microsoft.Kusto/clusters/databases@2023-08-15' = {
-  name: 'adxtestdb'
+  name: 'adxdb'
   location: location
   kind: 'ReadWrite'
   parent: cluster
-  properties: { 
-    hotCachePeriod :'P31D'
-    softDeletePeriod:'P365D'
-  }
+
 }
