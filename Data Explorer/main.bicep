@@ -1,9 +1,11 @@
 //az bicep build --file main.bicep
+//az deployment group create --resource-group adxtestrg --template-file main.bicep 
+
+targetScope = 'resourceGroup' 
+
 metadata name = 'Kusto Cluster'
 metadata description = 'This module deploys a Kusto Cluster.'
 metadata owner = 'Azure/module-maintainers'
-
-targetScope = 'resourceGroup'
 
 @minLength(4)
 @maxLength(22)
@@ -14,10 +16,10 @@ param name string = 'adxtstcluster'
 param location string = resourceGroup().location
 
 @description('Required. The SKU of the Kusto Cluster.')
-param sku string = 'Dev(No SLA)_Standard_E2a_v4'
+param sku string = 'Standard_E2a_v4'
 
 @description('Optional. The number of instances of the Kusto Cluster.')
-param capacity int = 1
+param capacity int = 2
 
 @description('Optional. The tier of the Kusto Cluster.')
 param tier string  = 'Standard'
@@ -25,7 +27,7 @@ param tier string  = 'Standard'
 @description('Optional. The tier of the Kusto Cluster.')
 param engineType string  = 'V3'
 
-resource symbolicname 'Microsoft.Kusto/clusters@2023-08-15' = {
+resource cluster 'Microsoft.Kusto/clusters@2023-08-15' = {
   name: name
   location: location
   sku: {
@@ -47,5 +49,16 @@ resource symbolicname 'Microsoft.Kusto/clusters@2023-08-15' = {
     }
     publicIPType: 'IPv4'
     publicNetworkAccess: 'Enabled'
+  }
+}
+
+resource database 'Microsoft.Kusto/clusters/databases@2023-08-15' = {
+  name: 'adxtestdb'
+  location: location
+  kind: 'ReadWrite'
+  parent: cluster
+  properties: { 
+    hotCachePeriod :'P31D'
+    softDeletePeriod:'P365D'
   }
 }
