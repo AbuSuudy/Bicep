@@ -1,9 +1,6 @@
 param storageLocation string
 param storageName string
-
-//poweshell script to get id
-//Get-AzRoleDefinition "Contributor" | ConvertTo-Json
-var roleDefinitionResourceId = 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+param roleDefinitionResourceId string
 
 targetScope = 'resourceGroup'
 

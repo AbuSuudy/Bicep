@@ -1,21 +1,25 @@
-//az bicep build --file main.bicep
 //az deployment group create --resource-group RG-AbubakarSuudy-DEV --template-file main.bicep 
 
 targetScope = 'resourceGroup' 
 
 metadata name = 'Kusto Cluster'
 metadata description = 'This module deploys a Kusto Cluster.'
-metadata owner = 'Azure/module-maintainers'
+metadata owner = 'Abubakar Suudy'
 
 @minLength(4)
 @maxLength(22)
-@description('Required. The name of the Kusto cluster which must be unique within Azure.')
-param name string = 'adxcluster02'
+@description('Required. The name of the database in the cluset..')
+param databaseName string
+
+@minLength(4)
+@maxLength(22)
+@description('Required. The name of the Kusto cluster.')
+param clusterName string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. The SKU of the Kusto Cluster.')
+@description('Optional. The SKU of the Kusto Cluster.')
 param sku string = 'Standard_E2a_v4'
 
 @description('Optional. The number of instances of the Kusto Cluster.')
@@ -28,7 +32,7 @@ param tier string  = 'Standard'
 param engineType string  = 'V3'
 
 resource cluster 'Microsoft.Kusto/clusters@2023-08-15' = {
-  name: name
+  name: clusterName
   location: location
   sku: {
     capacity: capacity
@@ -53,7 +57,7 @@ resource cluster 'Microsoft.Kusto/clusters@2023-08-15' = {
 }
 
 resource database 'Microsoft.Kusto/clusters/databases@2023-08-15' = {
-  name: 'adxdb'
+  name: databaseName
   location: location
   kind: 'ReadWrite'
   parent: cluster

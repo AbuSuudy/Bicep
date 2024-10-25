@@ -1,9 +1,14 @@
-//Create managementGroup and subscriptions
 targetScope = 'managementGroup'
 
+@description('Required. Location of resouce group and resouces.')
+@allowed([
+  'uksouth'
+  'ukwest'
+])
 param resourceGroupName string
+
+@description('Required.Resource group name.')
 param resourceGroupLocation string
-param storageName string
 
 resource rootMG 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: 'Root'
@@ -36,7 +41,6 @@ module resouceGrourp '2-ResourceGroup.bicep' = {
   params: {
     resourceGroupLocation:resourceGroupLocation 
     resourceGroupName: resourceGroupName
-    storageName: storageName
     
   }
   scope: subscription(sub.name)
