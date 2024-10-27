@@ -1,4 +1,4 @@
-//az deployment group create --resource-group RG-AbubakarSuudy-DEV --template-file main.bicep 
+//az deployment group create --resource-group RG-AbubakarSuudy-DEV --template-file main.bicep  --parameters clusterName=adxcluster02 databaseName=adxdb
 
 targetScope = 'resourceGroup' 
 
@@ -8,13 +8,14 @@ metadata owner = 'Abubakar Suudy'
 
 @minLength(4)
 @maxLength(22)
-@description('Required. The name of the database in the cluset..')
-param databaseName string
+@description('Required. The name of the Kusto cluster.')
+param clusterName string
+
 
 @minLength(4)
 @maxLength(22)
-@description('Required. The name of the Kusto cluster.')
-param clusterName string
+@description('Required. The name of the database in the cluset..')
+param databaseName string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
