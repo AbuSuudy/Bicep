@@ -1,25 +1,27 @@
 targetScope='subscription'
 
 
-param resourceGroupLocation string
-param resourceGroupName string
+param location string
+param functionResourceGroupName string
+param storageResourceGroupName string
+
 
 resource StorageRG 'Microsoft.Resources/resourceGroups@2024-03-01' = {
-  name: resourceGroupName
-  location: resourceGroupLocation
+  name: storageResourceGroupName
+  location: location
 }
 
-module storageAcct '3-storage.bicep' = {
+module storageAcct 'storageaccount.bicep' = {
   name: 'storageModule'
   scope: StorageRG
 }
 
 resource AzureFunctionRG 'Microsoft.Resources/resourceGroups@2024-03-01' = {
-  name: resourceGroupName
-  location: resourceGroupLocation
+  name: functionResourceGroupName
+  location: location
 }
 
-module azureFunction '3-azureFucntion.bicep' = {
+module azureFunction 'azureFunction.bicep' = {
   name: 'FunctionDeployment'
   scope: AzureFunctionRG
   params: {
